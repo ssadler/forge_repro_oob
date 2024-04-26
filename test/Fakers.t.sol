@@ -6,6 +6,9 @@ import "../src/AuthProxy.sol";
 import "forge-std/Test.sol";
 
 
+bool constant DISPLAY_BUG = false;
+
+
 contract Repro is Test {
 
   AuthProxy _authProxy = new AuthProxy();
@@ -21,7 +24,10 @@ contract Repro is Test {
 
     bytes[] memory outputs = _authProxy.proxy(calls);
 
-    abi.decode(outputs[0], (address));
+    // This code should not run? Since _authProxy.proxy reverted
+    if (DISPLAY_BUG) {
+      abi.decode(outputs[0], (address));
+    }
   }
 
   function place() external pure {
